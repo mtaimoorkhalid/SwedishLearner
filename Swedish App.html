@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Swedish for Zainab (30 Day Challenge)</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+   <style>
+        /* --- GLOBAL RESETS --- */
+        * { box-sizing: border-box; } /* Crucial for responsiveness */
+
+        :root {
+            --primary: #005B99;
+            --accent: #FFD700;
+            --love: #d63384;
+            --bg: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-main: #2c3e50;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            padding: 0;
+            color: var(--text-main);
+            padding-bottom: 80px;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* --- STICKY HEADER --- */
+        .header-container {
+            position: sticky; top: 0; z-index: 1000;
+            background: rgba(244, 247, 246, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding-bottom: 5px;
+        }
+
+        .app-title {
+            text-align: center; margin: 0; padding-top: 15px;
+            color: var(--primary); font-weight: 800; font-size: 22px;
+        }
+
+        .subtitle {
+            text-align: center; color: #888; font-size: 13px;
+            margin-bottom: 10px; margin-top: 2px;
+        }
+
+        /* --- CONTROLS --- */
+        .controls { display: flex; justify-content: center; margin-bottom: 10px; }
+        
+        .toggle-btn {
+            background: white; padding: 6px 15px; border-radius: 20px;
+            border: 1px solid #ddd; display: flex; align-items: center; gap: 8px;
+            font-size: 14px; font-weight: 700; color: var(--primary);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        /* --- NAV SCROLL --- */
+        .nav-wrapper { position: relative; }
+        .nav-scroll {
+            display: flex; overflow-x: auto; gap: 10px;
+            padding: 5px 15px 15px 15px;
+            scrollbar-width: none; -ms-overflow-style: none;
+            scroll-behavior: smooth; scroll-snap-type: x mandatory;
+        }
+        .nav-scroll::-webkit-scrollbar { display: none; }
+
+        .nav-item {
+            flex: 0 0 auto; background: white; border: 1px solid #005B99;
+            color: #005B99; padding: 8px 20px; border-radius: 50px;
+            font-weight: 700; font-size: 15px; cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); scroll-snap-align: center;
+        }
+
+        .nav-item.active {
+            background: var(--primary); color: white;
+            border-color: var(--primary);
+            box-shadow: 0 4px 10px rgba(0, 91, 153, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* --- CONTENT --- */
+        .content-container { padding: 0 20px; min-height: 60vh; }
+        .day-section { display: none; animation: slideUp 0.4s ease-out; }
+        .day-section.active { display: block; }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            font-size: 18px; color: var(--primary);
+            border-bottom: 3px solid var(--accent);
+            display: inline-block; margin-top: 30px;
+            margin-bottom: 15px; padding-bottom: 5px;
+        }
+
+        h2.love-title {
+            background: var(--love); color: white; padding: 10px 15px;
+            border-radius: 12px; border: none; display: block;
+            text-align: center; box-shadow: 0 4px 10px rgba(214, 51, 132, 0.3);
+        }
+
+        /* --- GRIDS & CARDS --- */
+        .word-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); 
+            gap: 12px;
+        }
+        .card {
+            background: var(--card-bg); border-radius: 12px; padding: 15px 10px;
+            text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border: 1px solid #e1e4e8; transition: transform 0.1s;
+            cursor: pointer; position: relative;
+        }
+        .card:active { transform: scale(0.96); background-color: #e6f2ff; border-color: #005B99; }
+        .sv { display: block; font-size: 18px; font-weight: 800; color: var(--primary); margin-bottom: 4px; }
+        .pro { display: block; font-size: 14px; color: var(--love); font-style: italic; margin-bottom: 4px; }
+        .en { display: block; font-size: 13px; color: #666; font-weight: 500; }
+
+        /* --- LIST ITEMS --- */
+        .sentence-list { display: flex; flex-direction: column; gap: 12px; }
+        .row {
+            background: white; padding: 18px; border-radius: 12px;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border-left: 6px solid var(--accent);
+            cursor: pointer; transition: transform 0.1s;
+        }
+        .row-text { display: flex; flex-direction: column; }
+        .row .sv { font-size: 18px; margin-bottom: 2px; }
+        .row .pro { font-size: 14px; margin-bottom: 5px; }
+        .row .en { font-size: 14px; }
+        .row:active { transform: scale(0.97); background: #fafafa; }
+        .row.special { border-left-color: var(--love); background: #fff5f8; }
+        .row-icon { font-size: 22px; opacity: 0.8; }
+        .coming-soon { text-align: center; color: #aaa; margin-top: 50px; font-style: italic; }
+
+        /* --- 📱 RESPONSIVE TYPING PRACTICE MODE (FIXED) --- */
+        .fab-btn {
+            position: fixed; bottom: 20px; right: 20px;
+            background: var(--accent); color: var(--primary);
+            width: 60px; height: 60px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            cursor: pointer; z-index: 2000; border: 4px solid white;
+            transition: transform 0.2s;
+        }
+        .fab-btn:active { transform: scale(0.9); }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 91, 153, 0.96); z-index: 3000; 
+            display: none;
+            /* Flex changes for better mobile handling */
+            display: none; /* hidden by default */
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+            padding: 20px;
+            overflow-y: auto; /* Allows scrolling on small screens */
+        }
+
+        .quiz-card {
+            background: white; 
+            width: 90%; /* Fluid width */
+            max-width: 350px; /* Cap it for desktop */
+            border-radius: 20px; 
+            padding: 25px 15px; /* Reduced padding for mobile */
+            text-align: center; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            margin: auto; /* Centers card if screen height is small */
+        }
+
+        .quiz-question { font-size: 18px; color: #666; margin-bottom: 5px; display: block; }
+        
+        .quiz-word-en {
+            font-size: 28px; /* Slightly smaller for mobile safety */
+            font-weight: 800; color: var(--primary);
+            margin-bottom: 20px; display: block;
+            word-wrap: break-word; /* Prevents overflow */
+        }
+
+        /* Input Field */
+        .answer-input {
+            width: 100%; /* Full width of container */
+            padding: 12px; font-size: 20px;
+            text-align: center; border: 2px solid #ddd; border-radius: 10px;
+            outline: none; margin-bottom: 15px; font-weight: bold;
+            color: #333; font-family: 'Nunito', sans-serif;
+            background: #fafafa;
+        }
+        .answer-input:focus { border-color: var(--primary); background: white; }
+        .answer-input.correct { border-color: #28a745; background: #d4edda; color: #155724; }
+        .answer-input.wrong { border-color: #dc3545; background: #f8d7da; color: #721c24; }
+
+        /* Special Char Buttons */
+        .char-row { display: flex; gap: 8px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
+        .char-btn {
+            background: #eee; border: none; padding: 10px 16px; /* Larger touch targets */
+            border-radius: 8px; font-size: 18px; font-weight: bold;
+            color: #333; cursor: pointer; touch-action: manipulation;
+        }
+        .char-btn:active { background: #ddd; transform: scale(0.95); }
+
+        /* Check Button */
+        .check-btn {
+            background: var(--primary); color: white; border: none;
+            padding: 12px 0; width: 100%; /* Full width button is easier on mobile */
+            border-radius: 50px; font-size: 18px;
+            font-weight: 700; cursor: pointer; box-shadow: 0 4px 10px rgba(0,91,153,0.3);
+        }
+        .check-btn:active { transform: scale(0.95); }
+
+        .feedback-msg { min-height: 24px; margin-top: 15px; font-weight: bold; font-size: 16px; }
+
+        .close-quiz {
+            margin-top: 20px; background: rgba(255,255,255,0.2);
+            color: white; border: none; padding: 10px 20px; border-radius: 30px;
+            cursor: pointer;
+        }
+
+        /* --- MEDIA QUERY FOR SMALL SCREENS --- */
+        @media (max-width: 360px) {
+            .quiz-word-en { font-size: 24px; }
+            .answer-input { font-size: 18px; }
+            .h2 { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-container">
+        <h1 class="app-title">🇸🇪 Swedish Helper</h1>
+        <p class="subtitle">For Zainab With Love ❤️</p>
+        
+        <div class="controls">
+            <div class="toggle-btn">
+                <input type="checkbox" id="slowMode" style="transform: scale(1.2);">
+                <label for="slowMode">Slow Mode 🐢</label>
+            </div>
+        </div>
+
+        <div class="nav-wrapper">
+            <div class="nav-scroll" id="navScroll">
+                <div class="nav-item active" onclick="switchDay('day1', this)">Day 1</div>
+                <div class="nav-item" onclick="switchDay('day2', this)">Day 2</div>
+                </div>
+        </div>
+    </div>
+
+    <div class="content-container" id="contentArea">
+
+        <div id="day1" class="day-section active">
+            
+            <h2 class="love-title">Remember You Are Doing This For Mama ❤️</h2>
+            <div class="sentence-list">
+                <div class="row special" onclick="speak('Jag heter Zainab')">
+                    <div class="row-text"><span class="sv">Jag heter Zainab</span><span class="pro">Yah heh-ter Zainab</span><span class="en">I am Zainab</span></div>
+                    <div class="row-icon">👩🏻</div>
+                </div>
+
+                <div class="row special" onclick="speak('Jag älskar min mamma')">
+                    <div class="row-text"><span class="sv">Jag älskar min mamma</span><span class="pro">Yah el-skar min mam-ma</span><span class="en">I love my mama</span></div>
+                    <div class="row-icon">❤️</div>
+                </div>
+                
+                <div class="row special" onclick="speak('Jag ska göra mamma stolt')">
+                    <div class="row-text"><span class="sv">Jag ska göra mamma stolt</span><span class="pro">Yah ska yuh-ra mam-ma stolt</span><span class="en">I will make mama proud (insha'Allah)</span></div>
+                    <div class="row-icon">🌟</div>
+                </div>
+
+                <div class="row special" onclick="speak('Tack för allt')">
+                    <div class="row-text"><span class="sv">Tack för allt</span><span class="pro">Tack fur alt</span><span class="en">Thanks for everything</span></div>
+                    <div class="row-icon">🙏</div>
+                </div>
+
+                <div class="row special" onclick="speak('Jag är stark')">
+                    <div class="row-text"><span class="sv">Jag är stark</span><span class="pro">Yah air stark</span><span class="en">I am strong (independent)</span></div>
+                    <div class="row-icon">💪</div>
+                </div>
+            </div>
+
+            <h2>Common Words</h2>
+            <div class="word-grid">
+                 <div class="card" onclick="speak('Hej')"><span class="sv">Hej</span><span class="pro">Hey</span><span class="en">Hello</span></div>
+        <div class="card" onclick="speak('Tack')"><span class="sv">Tack</span><span class="pro">Tack</span><span class="en">Thanks</span></div>
+        <div class="card" onclick="speak('Ja')"><span class="sv">Ja</span><span class="pro">Yah</span><span class="en">Yes</span></div>
+        <div class="card" onclick="speak('Nej')"><span class="sv">Nej</span><span class="pro">Nay</span><span class="en">No</span></div>
+        <div class="card" onclick="speak('Ursäkta')"><span class="sv">Ursäkta</span><span class="pro">Ur-shek-ta</span><span class="en">Excuse me</span></div>
+        <div class="card" onclick="speak('Förlåt')"><span class="sv">Förlåt</span><span class="pro">Fur-loht</span><span class="en">Sorry</span></div>
+        <div class="card" onclick="speak('Bra')"><span class="sv">Bra</span><span class="pro">Brah</span><span class="en">Good</span></div>
+        <div class="card" onclick="speak('Hejdå')"><span class="sv">Hejdå</span><span class="pro">Hey-doh</span><span class="en">Goodbye</span></div>
+        <div class="card" onclick="speak('Kanske')"><span class="sv">Kanske</span><span class="pro">Kan-sheh</span><span class="en">Maybe</span></div>
+        <div class="card" onclick="speak('Snälla')"><span class="sv">Snälla</span><span class="pro">Snel-la</span><span class="en">Please</span></div>
+
+        <div class="card" onclick="speak('Vad')"><span class="sv">Vad</span><span class="pro">Vahd</span><span class="en">What</span></div>
+        <div class="card" onclick="speak('Var')"><span class="sv">Var</span><span class="pro">Vahr</span><span class="en">Where</span></div>
+        <div class="card" onclick="speak('När')"><span class="sv">När</span><span class="pro">Nair</span><span class="en">When</span></div>
+        <div class="card" onclick="speak('Vem')"><span class="sv">Vem</span><span class="pro">Vem</span><span class="en">Who</span></div>
+        <div class="card" onclick="speak('Hur')"><span class="sv">Hur</span><span class="pro">Hoor</span><span class="en">How</span></div>
+        <div class="card" onclick="speak('Varför')"><span class="sv">Varför</span><span class="pro">Var-fur</span><span class="en">Why</span></div>
+
+        <div class="card" onclick="speak('Gata')"><span class="sv">Gata</span><span class="pro">Gah-ta</span><span class="en">Street</span></div>
+        <div class="card" onclick="speak('Tåg')"><span class="sv">Tåg</span><span class="pro">Tohg</span><span class="en">Train</span></div>
+        <div class="card" onclick="speak('Buss')"><span class="sv">Buss</span><span class="pro">Bus</span><span class="en">Bus</span></div>
+        <div class="card" onclick="speak('Tunnelbana')"><span class="sv">Tunnelbana</span><span class="pro">Tun-el-bah-na</span><span class="en">Metro</span></div>
+        <div class="card" onclick="speak('Ingång')"><span class="sv">Ingång</span><span class="pro">In-gong</span><span class="en">Entrance</span></div>
+        <div class="card" onclick="speak('Utgång')"><span class="sv">Utgång</span><span class="pro">Oot-gong</span><span class="en">Exit</span></div>
+        <div class="card" onclick="speak('Hiss')"><span class="sv">Hiss</span><span class="pro">Hiss</span><span class="en">Elevator</span></div>
+        <div class="card" onclick="speak('Toalett')"><span class="sv">Toalett</span><span class="pro">To-ah-let</span><span class="en">Toilet</span></div>
+        <div class="card" onclick="speak('Centrum')"><span class="sv">Centrum</span><span class="pro">Sen-trum</span><span class="en">City Center</span></div>
+
+        <div class="card" onclick="speak('Kassa')"><span class="sv">Kassa</span><span class="pro">Kas-sa</span><span class="en">Checkout</span></div>
+        <div class="card" onclick="speak('Kort')"><span class="sv">Kort</span><span class="pro">Koort</span><span class="en">Card</span></div>
+        <div class="card" onclick="speak('Kontanter')"><span class="sv">Kontanter</span><span class="pro">Kon-tan-ter</span><span class="en">Cash</span></div>
+        <div class="card" onclick="speak('Kvitto')"><span class="sv">Kvitto</span><span class="pro">Kvit-toh</span><span class="en">Receipt</span></div>
+        <div class="card" onclick="speak('Påse')"><span class="sv">Påse</span><span class="pro">Poh-seh</span><span class="en">Bag</span></div>
+        <div class="card" onclick="speak('Öppet')"><span class="sv">Öppet</span><span class="pro">Uh-pet</span><span class="en">Open</span></div>
+        <div class="card" onclick="speak('Stängt')"><span class="sv">Stängt</span><span class="pro">Stengt</span><span class="en">Closed</span></div>
+        <div class="card" onclick="speak('Rea')"><span class="sv">Rea</span><span class="pro">Reh-ah</span><span class="en">Sale</span></div>
+        <div class="card" onclick="speak('Pant')"><span class="sv">Pant</span><span class="pro">Pant</span><span class="en">Deposit</span></div>
+
+        <div class="card" onclick="speak('Idag')"><span class="sv">Idag</span><span class="pro">Ee-dahg</span><span class="en">Today</span></div>
+        <div class="card" onclick="speak('Imorgon')"><span class="sv">Imorgon</span><span class="pro">Ee-mor-ron</span><span class="en">Tomorrow</span></div>
+        <div class="card" onclick="speak('Nu')"><span class="sv">Nu</span><span class="pro">Noo</span><span class="en">Now</span></div>
+        <div class="card" onclick="speak('Senare')"><span class="sv">Senare</span><span class="pro">Seh-nah-reh</span><span class="en">Later</span></div>
+        <div class="card" onclick="speak('Klockan')"><span class="sv">Klockan</span><span class="pro">Klok-kan</span><span class="en">Time</span></div>
+
+        <div class="card" onclick="speak('Vatten')"><span class="sv">Vatten</span><span class="pro">Vat-ten</span><span class="en">Water</span></div>
+        <div class="card" onclick="speak('Kaffe')"><span class="sv">Kaffe</span><span class="pro">Kaf-feh</span><span class="en">Coffee</span></div>
+        <div class="card" onclick="speak('Äta')"><span class="sv">Äta</span><span class="pro">Eh-ta</span><span class="en">To eat</span></div>
+        <div class="card" onclick="speak('Dricka')"><span class="sv">Dricka</span><span class="pro">Drick-ah</span><span class="en">To drink</span></div>
+        <div class="card" onclick="speak('Jobba')"><span class="sv">Jobba</span><span class="pro">Yob-bah</span><span class="en">To work</span></div>
+        <div class="card" onclick="speak('Plugga')"><span class="sv">Plugga</span><span class="pro">Plug-gah</span><span class="en">To study</span></div>
+        <div class="card" onclick="speak('Gå')"><span class="sv">Gå</span><span class="pro">Goh</span><span class="en">To walk</span></div>
+        <div class="card" onclick="speak('Trött')"><span class="sv">Trött</span><span class="pro">Trutt</span><span class="en">Tired</span></div>
+        <div class="card" onclick="speak('Hungrig')"><span class="sv">Hungrig</span><span class="pro">Hung-rig</span><span class="en">Hungry</span></div>
+        <div class="card" onclick="speak('Sova')"><span class="sv">Sova</span><span class="pro">Soh-vah</span><span class="en">To sleep</span></div>
+            </div>
+
+            <h2>Useful Sentences</h2>
+            <div class="sentence-list">
+                 <div class="row" onclick="speak('Ursäkta, pratar du engelska?')">
+            <div class="row-text"><span class="sv">Ursäkta, pratar du engelska?</span><span class="pro">Ur-shek-ta, prah-tar doo eng-el-ska?</span><span class="en">Excuse me, do you speak English?</span></div>
+            <div class="row-icon">🔊</div>
+        </div>
+
+        <div class="row" onclick="speak('Jag förstår inte svenska.')">
+            <div class="row-text"><span class="sv">Jag förstår inte svenska.</span><span class="pro">Yah fur-shtor in-teh sven-ska.</span><span class="en">I don't understand Swedish.</span></div>
+            <div class="row-icon">🔊</div>
+        </div>
+
+        <div class="row" onclick="speak('Kan du hjälpa mig?')">
+            <div class="row-text"><span class="sv">Kan du hjälpa mig?</span><span class="pro">Kan doo yel-pa may?</span><span class="en">Can you help me?</span></div>
+            <div class="row-icon">🔊</div>
+        </div>
+
+        <div class="row" onclick="speak('Var ligger tunnelbanan?')">
+            <div class="row-text"><span class="sv">Var ligger tunnelbanan?</span><span class="pro">Vahr lig-ger tun-el-bah-nan?</span><span class="en">Where is the subway?</span></div>
+            <div class="row-icon">🔊</div>
+        </div>
+
+        <div class="row" onclick="speak('Jag letar efter...')">
+            <div class="row-text"><span class="sv">Jag letar efter...</span><span class="pro">Yah leh-tar ef-ter...</span><span class="en">I am looking for...</span></div>
+            <div class="row-icon">🔊</div>
+        </div>
+
+        <div class="row" onclick="speak('Tar ni kort?')">
+            <div class="row-text"><span class="sv">Tar ni kort?</span><span class="pro">Tar nee koort?</span><span class="en">Do you take card?</span></div>
+            <div class="row-icon">🔊</div>
+        </div>
+
+        <div class="row" onclick="speak('En påse, tack.')">
+            <div class="row-text"><span class="sv">En påse, tack.</span><span class="pro">En poh-seh, tack.</span><span class="en">A bag, please.</span></div>
+            <div class="row-icon">🔊</div>
+        </div>
+
+        <div class="row" onclick="speak('Kan jag få kvittot?')">
+            <div class="row-text"><span class="sv">Kan jag få kvittot?</span><span class="pro">Kan yah foh kvit-tot?</span><span class="en">Can I have the receipt?</span></div>
+            <div class="row-icon">🔊</div>
+        </div>
+
+        <div class="row" onclick="speak('Det var gott!')">
+            <div class="row-text"><span class="sv">Det var gott!</span><span class="pro">Deh vahr got!</span><span class="en">That was good!</span></div>
+            <div class="row-icon">🔊</div>
+        </div>
+
+        <div class="row" onclick="speak('Vad kostar den här?')">
+            <div class="row-text"><span class="sv">Vad kostar den här?</span><span class="pro">Vahd kos-tar den hair?</span><span class="en">What does this cost?</span></div>
+            <div class="row-icon">🔊</div>
+        </div>
+
+        <div class="row" onclick="speak('Jag vill ha en kaffe.')">
+            <div class="row-text"><span class="sv">Jag vill ha en kaffe.</span><span class="pro">Yah vill ha en kaf-feh.</span><span class="en">I want a coffee.</span></div>
+            <div class="row-icon">🔊</div>
+        </div>
+
+        <div class="row" onclick="speak('Tusen tack.')">
+            <div class="row-text"><span class="sv">Tusen tack.</span><span class="pro">Too-sen tack.</span><span class="en">A thousand thanks.</span></div>
+            <div class="row-icon">🔊</div>
+        </div>
+
+        <div class="row" onclick="speak('Vi ses senare.')">
+            <div class="row-text"><span class="sv">Vi ses senare.</span><span class="pro">Vee sess seh-nah-reh.</span><span class="en">See you later.</span></div>
+            <div class="row-icon">🔊</div>
+        </div>
+
+        <div class="row" onclick="speak('Ha en bra dag!')">
+            <div class="row-text"><span class="sv">Ha en bra dag!</span><span class="pro">Ha en brah dahg!</span><span class="en">Have a good day!</span></div>
+            <div class="row-icon">🔊</div>
+        </div>
+            </div>
+        </div>
+
+        <div id="day2" class="day-section">
+            
+            <h2>🔊 Special Sounds</h2>
+            <p style="font-size:13px; color:#666; margin-top:-10px;">Click to hear tricky Swedish vowels!</p>
+            <div class="word-grid" style="grid-template-columns: repeat(5, 1fr);">
+                <div class="card" style="border-color:#d63384;" onclick="speak('Å')"><span class="sv">Å</span><span class="pro">Oh</span></div>
+                <div class="card" style="border-color:#d63384;" onclick="speak('Ä')"><span class="sv">Ä</span><span class="pro">Eh</span></div>
+                <div class="card" style="border-color:#d63384;" onclick="speak('Ö')"><span class="sv">Ö</span><span class="pro">Uh</span></div>
+                <div class="card" style="border-color:#d63384;" onclick="speak('Y')"><span class="sv">Y</span><span class="pro">Ee+U</span></div>
+                <div class="card" style="border-color:#d63384;" onclick="speak('U')"><span class="sv">U</span><span class="pro">Ooh</span></div>
+            </div>
+
+            <h2>1️⃣ Numbers (1-10)</h2>
+            <div class="word-grid">
+                <div class="card" onclick="speak('Ett')"><span class="sv">Ett</span><span class="pro">Et</span><span class="en">1</span></div>
+                <div class="card" onclick="speak('Två')"><span class="sv">Två</span><span class="pro">Tvoh</span><span class="en">2</span></div>
+                <div class="card" onclick="speak('Tre')"><span class="sv">Tre</span><span class="pro">Treh</span><span class="en">3</span></div>
+                <div class="card" onclick="speak('Fyra')"><span class="sv">Fyra</span><span class="pro">Fy-rah</span><span class="en">4</span></div>
+                <div class="card" onclick="speak('Fem')"><span class="sv">Fem</span><span class="pro">Fem</span><span class="en">5</span></div>
+                <div class="card" onclick="speak('Sex')"><span class="sv">Sex</span><span class="pro">Sex</span><span class="en">6</span></div>
+                <div class="card" onclick="speak('Sju')"><span class="sv">Sju</span><span class="pro">Shoo</span><span class="en">7</span></div>
+                <div class="card" onclick="speak('Åtta')"><span class="sv">Åtta</span><span class="pro">Ot-ta</span><span class="en">8</span></div>
+                <div class="card" onclick="speak('Nio')"><span class="sv">Nio</span><span class="pro">Nee-oh</span><span class="en">9</span></div>
+                <div class="card" onclick="speak('Tio')"><span class="sv">Tio</span><span class="pro">Tee-oh</span><span class="en">10</span></div>
+            </div>
+
+            <h2>Family</h2>
+            <div class="word-grid">
+                <div class="card" onclick="speak('Mamma')"><span class="sv">Mamma</span><span class="pro">Mam-ma</span><span class="en">Mom</span></div>
+                <div class="card" onclick="speak('Pappa')"><span class="sv">Pappa</span><span class="pro">Pap-pa</span><span class="en">Dad</span></div>
+                <div class="card" onclick="speak('Syster')"><span class="sv">Syster</span><span class="pro">Sys-ter</span><span class="en">Sister</span></div>
+                <div class="card" onclick="speak('Bror')"><span class="sv">Bror</span><span class="pro">Broor</span><span class="en">Brother</span></div>
+                <div class="card" onclick="speak('Dotter')"><span class="sv">Dotter</span><span class="pro">Dot-ter</span><span class="en">Daughter</span></div>
+                <div class="card" onclick="speak('Son')"><span class="sv">Son</span><span class="pro">Son</span><span class="en">Son</span></div>
+            </div>
+
+            <h2>Time</h2>
+            <div class="word-grid">
+                <div class="card" onclick="speak('Idag')"><span class="sv">Idag</span><span class="pro">Ee-dahg</span><span class="en">Today</span></div>
+                <div class="card" onclick="speak('Imorgon')"><span class="sv">Imorgon</span><span class="pro">Ee-mor-ron</span><span class="en">Tomorrow</span></div>
+                <div class="card" onclick="speak('Igår')"><span class="sv">Igår</span><span class="pro">Ee-gor</span><span class="en">Yesterday</span></div>
+                <div class="card" onclick="speak('Morgon')"><span class="sv">Morgon</span><span class="pro">Mor-ron</span><span class="en">Morning</span></div>
+                <div class="card" onclick="speak('Kväll')"><span class="sv">Kväll</span><span class="pro">Kvel</span><span class="en">Evening</span></div>
+                <div class="card" onclick="speak('Natt')"><span class="sv">Natt</span><span class="pro">Nat</span><span class="en">Night</span></div>
+            </div>
+
+            <h2>Important Places</h2>
+            <div class="word-grid">
+                <div class="card" onclick="speak('Hemma')"><span class="sv">Hemma</span><span class="pro">Hem-ma</span><span class="en">Home</span></div>
+                <div class="card" onclick="speak('Skola')"><span class="sv">Skola</span><span class="pro">Sko-lah</span><span class="en">School</span></div>
+                <div class="card" onclick="speak('Jobb')"><span class="sv">Jobb</span><span class="pro">Yob</span><span class="en">Work</span></div>
+                <div class="card" onclick="speak('Affär')"><span class="sv">Affär</span><span class="pro">Af-fair</span><span class="en">Store</span></div>
+                <div class="card" onclick="speak('Sjukhus')"><span class="sv">Sjukhus</span><span class="pro">Hyook-hoos</span><span class="en">Hospital</span></div>
+                <div class="card" onclick="speak('Apotek')"><span class="sv">Apotek</span><span class="pro">A-po-tek</span><span class="en">Pharmacy</span></div>
+            </div>
+
+            <h2>Common Objects</h2>
+            <div class="word-grid">
+                <div class="card" onclick="speak('Bil')"><span class="sv">Bil</span><span class="pro">Beel</span><span class="en">Car</span></div>
+                <div class="card" onclick="speak('Buss')"><span class="sv">Buss</span><span class="pro">Bus</span><span class="en">Bus</span></div>
+                <div class="card" onclick="speak('Tåg')"><span class="sv">Tåg</span><span class="pro">Tohg</span><span class="en">Train</span></div>
+                <div class="card" onclick="speak('Nyckel')"><span class="sv">Nyckel</span><span class="pro">Ny-kel</span><span class="en">Key</span></div>
+                <div class="card" onclick="speak('Mobil')"><span class="sv">Mobil</span><span class="pro">Moh-beel</span><span class="en">Phone</span></div>
+                <div class="card" onclick="speak('Pengar')"><span class="sv">Pengar</span><span class="pro">Peng-ar</span><span class="en">Money</span></div>
+                <div class="card" onclick="speak('Säng')"><span class="sv">Säng</span><span class="pro">Seng</span><span class="en">Bed</span></div>
+                <div class="card" onclick="speak('Bord')"><span class="sv">Bord</span><span class="pro">Boord</span><span class="en">Table</span></div>
+                <div class="card" onclick="speak('Stol')"><span class="sv">Stol</span><span class="pro">Stool</span><span class="en">Chair</span></div>
+                <div class="card" onclick="speak('Dörr')"><span class="sv">Dörr</span><span class="pro">Dur</span><span class="en">Door</span></div>
+                <div class="card" onclick="speak('Fönster')"><span class="sv">Fönster</span><span class="pro">Fuhn-ster</span><span class="en">Window</span></div>
+                <div class="card" onclick="speak('Väska')"><span class="sv">Väska</span><span class="pro">Ves-ka</span><span class="en">Bag</span></div>
+            </div>
+
+            <h2>Colors</h2>
+            <div class="word-grid">
+                <div class="card" onclick="speak('Röd')"><span class="sv" style="color:red">Röd</span><span class="pro">Ruhd</span><span class="en">Red</span></div>
+                <div class="card" onclick="speak('Blå')"><span class="sv" style="color:blue">Blå</span><span class="pro">Bloh</span><span class="en">Blue</span></div>
+                <div class="card" onclick="speak('Grön')"><span class="sv" style="color:green">Grön</span><span class="pro">Gruhn</span><span class="en">Green</span></div>
+                <div class="card" onclick="speak('Gul')"><span class="sv" style="color:#d4af37">Gul</span><span class="pro">Gool</span><span class="en">Yellow</span></div>
+                <div class="card" onclick="speak('Svart')"><span class="sv" style="color:black">Svart</span><span class="pro">Svart</span><span class="en">Black</span></div>
+                <div class="card" onclick="speak('Vit')"><span class="sv" style="color:#ccc">Vit</span><span class="pro">Veet</span><span class="en">White</span></div>
+            </div>
+
+            <h2>💬 15 Useful Sentences</h2>
+            <div class="sentence-list">
+                <div class="row" onclick="speak('Hur mår du?')"><div class="row-text"><span class="sv">Hur mår du?</span><span class="pro">Hoor mor doo?</span><span class="en">How are you?</span></div></div>
+                <div class="row" onclick="speak('Jag mår bra.')"><div class="row-text"><span class="sv">Jag mår bra.</span><span class="pro">Yah mor brah</span><span class="en">I am good.</span></div></div>
+                <div class="row" onclick="speak('Vad gör du?')"><div class="row-text"><span class="sv">Vad gör du?</span><span class="pro">Vah yoor doo?</span><span class="en">What are you doing?</span></div></div>
+                <div class="row" onclick="speak('Jag äter mat.')"><div class="row-text"><span class="sv">Jag äter mat.</span><span class="pro">Yah eh-ter maht</span><span class="en">I am eating food.</span></div></div>
+                <div class="row" onclick="speak('Vart ska du?')"><div class="row-text"><span class="sv">Vart ska du?</span><span class="pro">Vart ska doo?</span><span class="en">Where are you going?</span></div></div>
+                <div class="row" onclick="speak('Jag ska hem.')"><div class="row-text"><span class="sv">Jag ska hem.</span><span class="pro">Yah ska hem</span><span class="en">I am going home.</span></div></div>
+                <div class="row" onclick="speak('Jag är trött.')"><div class="row-text"><span class="sv">Jag är trött.</span><span class="pro">Yah air trutt</span><span class="en">I am tired.</span></div></div>
+                <div class="row" onclick="speak('Jag vill sova.')"><div class="row-text"><span class="sv">Jag vill sova.</span><span class="pro">Yah vill soh-va</span><span class="en">I want to sleep.</span></div></div>
+                <div class="row" onclick="speak('Det är dyrt.')"><div class="row-text"><span class="sv">Det är dyrt.</span><span class="pro">Deh air dyrt</span><span class="en">It is expensive.</span></div></div>
+                <div class="row" onclick="speak('Det är billigt.')"><div class="row-text"><span class="sv">Det är billigt.</span><span class="pro">Deh air bil-ligt</span><span class="en">It is cheap.</span></div></div>
+                <div class="row" onclick="speak('Kan vi gå nu?')"><div class="row-text"><span class="sv">Kan vi gå nu?</span><span class="pro">Kan vee goh noo?</span><span class="en">Can we go now?</span></div></div>
+                <div class="row" onclick="speak('Jag älskar dig.')"><div class="row-text"><span class="sv">Jag älskar dig.</span><span class="pro">Yah el-skar day</span><span class="en">I love you.</span></div></div>
+                <div class="row" onclick="speak('Ring mig.')"><div class="row-text"><span class="sv">Ring mig.</span><span class="pro">Ring may</span><span class="en">Call me.</span></div></div>
+                <div class="row" onclick="speak('Jag vet inte.')"><div class="row-text"><span class="sv">Jag vet inte.</span><span class="pro">Yah veht in-teh</span><span class="en">I don't know.</span></div></div>
+                <div class="row" onclick="speak('Ingen orsak.')"><div class="row-text"><span class="sv">Ingen orsak.</span><span class="pro">Ing-en oor-sahk</span><span class="en">You're welcome.</span></div></div>
+            </div>
+        </div>
+
+        <div id="day3" class="day-section">
+    
+    <h2 class="love-title">Day 3: Kitchen & Magic Powers 🥘✨</h2>
+    <p style="text-align:center; color:#666; font-size:14px; margin-bottom:20px;">
+        Zainab, today we unlock Swedish reading with 3 Magic Tricks and the "Sentence Builders"! 🧞‍♀️
+    </p>
+
+    <h2>🔤 Today's 5 Sounds (Consonants)</h2>
+    <p style="font-size:13px; color:#666; margin-top:-10px;">Click to hear how Swedish changes these letters!</p>
+    <div class="word-grid" style="grid-template-columns: repeat(5, 1fr); margin-bottom:30px;">
+        <div class="card" style="border-color:#28a745;" onclick="speak('J')"><span class="sv">J</span><span class="pro">Yee</span><span class="en">Like 'Y'</span></div>
+        <div class="card" style="border-color:#28a745;" onclick="speak('G')"><span class="sv">G</span><span class="pro">Geh</span><span class="en">Hard/Soft</span></div>
+        <div class="card" style="border-color:#28a745;" onclick="speak('K')"><span class="sv">K</span><span class="pro">Koh</span><span class="en">Hard/Soft</span></div>
+        <div class="card" style="border-color:#28a745;" onclick="speak('R')"><span class="sv">R</span><span class="pro">Err</span><span class="en">Rolled</span></div>
+        <div class="card" style="border-color:#28a745;" onclick="speak('V')"><span class="sv">V</span><span class="pro">Veh</span><span class="en">Victor</span></div>
+    </div>
+
+    <div style="background:#e3f2fd; padding:15px; border-radius:15px; border:2px dashed #005B99; margin-bottom:20px;">
+        <h3 style="margin-top:0; color:#005B99; text-align:center;">🎩 Magic Trick #1: The "Moon" Sound</h3>
+        <p style="font-size:14px; color:#444; line-height:1.5;">
+            <strong>Secret:</strong> English words ending in <strong>-TION</strong> are written exactly the same! 👯‍♀️<br>
+            <strong>The Sound:</strong> Don't say "shun"... say <strong>"SHOON"</strong> (rhymes with Balloon 🎈).
+        </p>
+        <div class="word-grid">
+            <div class="card" onclick="speak('Information')"><span class="sv">Information</span><span class="pro">In-for-ma-shoon</span></div>
+            <div class="card" onclick="speak('Station')"><span class="sv">Station</span><span class="pro">Sta-shoon</span></div>
+            <div class="card" onclick="speak('Situation')"><span class="sv">Situation</span><span class="pro">Sit-ya-shoon</span></div>
+            <div class="card" onclick="speak('Tradition')"><span class="sv">Tradition</span><span class="pro">Tra-di-shoon</span></div>
+            <div class="card" onclick="speak('Lektion')"><span class="sv">Lektion</span><span class="pro">Lek-shoon</span><span class="en">(Lesson)</span></div>
+            <div class="card" onclick="speak('Position')"><span class="sv">Position</span><span class="pro">Po-si-shoon</span></div>
+            <div class="card" onclick="speak('Relation')"><span class="sv">Relation</span><span class="pro">Re-la-shoon</span></div>
+            <div class="card" onclick="speak('Portion')"><span class="sv">Portion</span><span class="pro">Por-shoon</span></div>
+        </div>
+    </div>
+
+    <div style="background:#fff3cd; padding:15px; border-radius:15px; border:2px dashed #ffc107; margin-bottom:20px;">
+        <h3 style="margin-top:0; color:#856404; text-align:center;">🐍 Magic Trick #2: The "Isk" Hiss</h3>
+        <p style="font-size:14px; color:#444; line-height:1.5;">
+            <strong>Secret:</strong> English words ending in <strong>-IC</strong> get cold in Sweden! ❄️<br>
+            <strong>The Rule:</strong> Change <strong>-IC</strong> to <strong>-ISK</strong>. Make a snake sound! 🐍
+        </p>
+        <div class="word-grid">
+            <div class="card" onclick="speak('Fantastisk')"><span class="sv">Fantastisk</span><span class="pro">Fan-tas-tisk</span></div>
+            <div class="card" onclick="speak('Elektrisk')"><span class="sv">Elektrisk</span><span class="pro">Elek-trisk</span></div>
+            <div class="card" onclick="speak('Praktisk')"><span class="sv">Praktisk</span><span class="pro">Prak-tisk</span></div>
+            <div class="card" onclick="speak('Magisk')"><span class="sv">Magisk</span><span class="pro">Mah-gisk</span><span class="en">(Magic)</span></div>
+            <div class="card" onclick="speak('Logisk')"><span class="sv">Logisk</span><span class="pro">Loh-gisk</span><span class="en">(Logical)</span></div>
+            <div class="card" onclick="speak('Tragisk')"><span class="sv">Tragisk</span><span class="pro">Tra-gisk</span><span class="en">(Tragic)</span></div>
+            <div class="card" onclick="speak('Automatisk')"><span class="sv">Automatisk</span><span class="pro">Auto-mah-tisk</span></div>
+            <div class="card" onclick="speak('Typisk')"><span class="sv">Typisk</span><span class="pro">Ty-pisk</span><span class="en">(Typical)</span></div>
+        </div>
+    </div>
+
+    <div style="background:#f8d7da; padding:15px; border-radius:15px; border:2px dashed #dc3545; margin-bottom:25px;">
+        <h3 style="margin-top:0; color:#721c24; text-align:center;">🥋 Magic Trick #3: The "K" Kick</h3>
+        <p style="font-size:14px; color:#444; line-height:1.5;">
+            <strong>Secret:</strong> Swedish is allergic to "C"! 🤧<br>
+            <strong>The Rule:</strong> If it sounds like a hard "K", Kick out the C and put a <strong>K</strong>!
+        </p>
+        <div class="word-grid">
+            <div class="card" onclick="speak('Kamera')"><span class="sv">Kamera</span><span class="en">Camera</span></div>
+            <div class="card" onclick="speak('Kontakt')"><span class="sv">Kontakt</span><span class="en">Contact</span></div>
+            <div class="card" onclick="speak('Musik')"><span class="sv">Musik</span><span class="en">Music</span></div>
+            <div class="card" onclick="speak('Kaffe')"><span class="sv">Kaffe</span><span class="en">Coffee</span></div>
+            <div class="card" onclick="speak('Kaos')"><span class="sv">Kaos</span><span class="en">Chaos</span></div>
+            <div class="card" onclick="speak('Kabin')"><span class="sv">Kabin</span><span class="en">Cabin</span></div>
+            <div class="card" onclick="speak('Kusin')"><span class="sv">Kusin</span><span class="en">Cousin</span></div>
+            <div class="card" onclick="speak('Krabba')"><span class="sv">Krabba</span><span class="en">Crab</span></div>
+        </div>
+    </div>
+
+    <h2>🥦 Grocery Shopping (Mat)</h2>
+    <div class="word-grid">
+        <div class="card" onclick="speak('Mat')"><span class="sv">Mat</span><span class="pro">Maht</span><span class="en">Food</span></div>
+        <div class="card" onclick="speak('Mjölk')"><span class="sv">Mjölk</span><span class="pro">Myulk</span><span class="en">Milk</span></div>
+        <div class="card" onclick="speak('Bröd')"><span class="sv">Bröd</span><span class="pro">Bruhd</span><span class="en">Bread</span></div>
+        <div class="card" onclick="speak('Vatten')"><span class="sv">Vatten</span><span class="pro">Vat-ten</span><span class="en">Water</span></div>
+        <div class="card" onclick="speak('Kyckling')"><span class="sv">Kyckling</span><span class="pro">Shyk-ling</span><span class="en">Chicken</span></div>
+        <div class="card" onclick="speak('Fisk')"><span class="sv">Fisk</span><span class="pro">Fisk</span><span class="en">Fish</span></div>
+        <div class="card" onclick="speak('Kött')"><span class="sv">Kött</span><span class="pro">Shutt</span><span class="en">Meat</span></div>
+        <div class="card" onclick="speak('Ost')"><span class="sv">Ost</span><span class="pro">Oost</span><span class="en">Cheese</span></div>
+        <div class="card" onclick="speak('Ägg')"><span class="sv">Ägg</span><span class="pro">Eg</span><span class="en">Egg</span></div>
+        <div class="card" onclick="speak('Ris')"><span class="sv">Ris</span><span class="pro">Rees</span><span class="en">Rice</span></div>
+    </div>
+
+    <h2>🍽️ In The Kitchen</h2>
+    <div class="word-grid">
+        <div class="card" onclick="speak('Frukost')"><span class="sv">Frukost</span><span class="pro">Froo-kost</span><span class="en">Breakfast</span></div>
+        <div class="card" onclick="speak('Lunch')"><span class="sv">Lunch</span><span class="pro">Lunch</span><span class="en">Lunch</span></div>
+        <div class="card" onclick="speak('Middag')"><span class="sv">Middag</span><span class="pro">Mid-dahg</span><span class="en">Dinner</span></div>
+        <div class="card" onclick="speak('Gaffel')"><span class="sv">Gaffel</span><span class="pro">Gaf-fel</span><span class="en">Fork</span></div>
+        <div class="card" onclick="speak('Kniv')"><span class="sv">Kniv</span><span class="pro">Kneev</span><span class="en">Knife</span></div>
+        <div class="card" onclick="speak('Sked')"><span class="sv">Sked</span><span class="pro">Skehd</span><span class="en">Spoon</span></div>
+    </div>
+
+    <h2>🏗️ Sentence Builders (The Logic)</h2>
+
+    <div style="border-left: 4px solid #005B99; padding-left: 15px; margin-bottom: 25px;">
+        <h3 style="color:#005B99; margin:0;">Rule #1: The Polite Ask 🙏</h3>
+        <p style="font-size:14px; color:#555;">To say "I want", Swedes add a little helper word "ha" (have).<br>
+        <strong>Formula:</strong> Jag vill ha + [Thing]</p>
+        
+        <div class="sentence-list">
+            <div class="row" onclick="speak('Jag vill ha kaffe.')">
+                <div class="row-text"><span class="sv">Jag vill ha kaffe.</span><span class="pro">Yah vill ha kaf-feh</span><span class="en">I want (to have) coffee. ☕</span></div>
+            </div>
+            <div class="row" onclick="speak('Jag vill ha mat.')">
+                <div class="row-text"><span class="sv">Jag vill ha mat.</span><span class="pro">Yah vill ha maht</span><span class="en">I want (to have) food. 🥘</span></div>
+            </div>
+            <div class="row" onclick="speak('Jag vill ha vatten.')">
+                <div class="row-text"><span class="sv">Jag vill ha vatten.</span><span class="pro">Yah vill ha vat-ten</span><span class="en">I want water. 💧</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div style="border-left: 4px solid #d63384; padding-left: 15px; margin-bottom: 25px;">
+        <h3 style="color:#d63384; margin:0;">Rule #2: The Describer 🌟</h3>
+        <p style="font-size:14px; color:#555;">To describe something (It is...), we say "Det är".<br>
+        <strong>Formula:</strong> Det är + [Adjective]</p>
+        
+        <div class="sentence-list">
+            <div class="row" onclick="speak('Det är gott.')">
+                <div class="row-text"><span class="sv">Det är gott.</span><span class="pro">Deh air got</span><span class="en">It is good (tasty). 😋</span></div>
+            </div>
+            <div class="row" onclick="speak('Det är varmt.')">
+                <div class="row-text"><span class="sv">Det är varmt.</span><span class="pro">Deh air varmt</span><span class="en">It is hot. 🔥</span></div>
+            </div>
+            <div class="row" onclick="speak('Det är dyrt.')">
+                <div class="row-text"><span class="sv">Det är dyrt.</span><span class="pro">Deh air dyrt</span><span class="en">It is expensive. 💰</span></div>
+            </div>
+            <div class="row" onclick="speak('Det är fantastisk!')">
+                <div class="row-text"><span class="sv">Det är fantastisk!</span><span class="pro">Deh air fan-tas-tisk</span><span class="en">It is fantastic! (Magic Trick #2 used!)</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div style="border-left: 4px solid #28a745; padding-left: 15px; margin-bottom: 25px;">
+        <h3 style="color:#28a745; margin:0;">Rule #3: The Helper 🤝</h3>
+        <p style="font-size:14px; color:#555;">To ask a question, start with "Kan" (Can).<br>
+        <strong>Formula:</strong> Kan du + [Action]?</p>
+        
+        <div class="sentence-list">
+            <div class="row" onclick="speak('Kan du hjälpa mig?')">
+                <div class="row-text"><span class="sv">Kan du hjälpa mig?</span><span class="pro">Kan doo yel-pa may?</span><span class="en">Can you help me? 🆘</span></div>
+            </div>
+            <div class="row" onclick="speak('Kan du köpa mjölk?')">
+                <div class="row-text"><span class="sv">Kan du köpa mjölk?</span><span class="pro">Kan doo shuh-pa myulk?</span><span class="en">Can you buy milk? 🥛</span></div>
+            </div>
+            <div class="row" onclick="speak('Kan vi äta nu?')">
+                <div class="row-text"><span class="sv">Kan vi äta nu?</span><span class="pro">Kan vee eh-ta noo?</span><span class="en">Can we eat now? 🍽️</span></div>
+            </div>
+        </div>
+    </div>
+    
+    <h3>Other Useful Phrases</h3>
+    <div class="sentence-list">
+        <div class="row" onclick="speak('Tack för maten!')">
+            <div class="row-text"><span class="sv">Tack för maten!</span><span class="pro">Tack fur mah-ten</span><span class="en">Thanks for the food! (Always say this)</span></div>
+        </div>
+        <div class="row" onclick="speak('Smaklig måltid!')">
+            <div class="row-text"><span class="sv">Smaklig måltid!</span><span class="pro">Smak-lig mol-teed</span><span class="en">Bon appétit!</span></div>
+        </div>
+        <div class="row" onclick="speak('Har vi kaffe?')">
+            <div class="row-text"><span class="sv">Har vi kaffe?</span><span class="pro">Har vee kaf-feh?</span><span class="en">Do we have coffee?</span></div>
+        </div>
+    </div>
+
+</div>
+
+<div id="day4" class="day-section">
+    
+    <h2 class="love-title">Day 4: Doctor Mode 👩‍⚕️</h2>
+    <p style="text-align:center; color:#666; font-size:14px; margin-bottom:20px;">
+        Zainab, today we use your medical brain! 🧠<br>
+        You will see that Swedish is actually just "Modified English" in the hospital.
+    </p>
+
+    <h2>🩺 Today's 5 Medical Sounds</h2>
+    <p style="font-size:13px; color:#666; margin-top:-10px;">Master these to sound like a native Doctor!</p>
+    <div class="word-grid" style="grid-template-columns: repeat(5, 1fr); margin-bottom:30px;">
+        <div class="card" style="border-color:#e91e63;" onclick="speak('Sj')"><span class="sv">Sj</span><span class="pro">Hwish</span><span class="en">Sjukhus</span></div>
+        <div class="card" style="border-color:#e91e63;" onclick="speak('Sk')"><span class="sv">Sk</span><span class="pro">Sk/Sh</span><span class="en">Skelett</span></div>
+        <div class="card" style="border-color:#e91e63;" onclick="speak('Kemi')"><span class="sv">Ke</span><span class="pro">Sheh</span><span class="en">Kemi</span></div>
+        <div class="card" style="border-color:#e91e63;" onclick="speak('Tj')"><span class="sv">Tj</span><span class="pro">Chuh</span><span class="en">Tjock</span></div>
+        <div class="card" style="border-color:#e91e63;" onclick="speak('Gn')"><span class="sv">Gn</span><span class="pro">Ng-n</span><span class="en">Ugn</span></div>
+    </div>
+
+    <div style="background:#e8f5e9; padding:15px; border-radius:15px; border:2px dashed #4caf50; margin-bottom:20px;">
+        <h3 style="margin-top:0; color:#2e7d32; text-align:center;">🕵️‍♀️ Trick #1: The Body Snatchers</h3>
+        <p style="font-size:14px; color:#444; line-height:1.5;">
+            <strong>Secret:</strong> Swedish "stole" many body parts from English! 🏃‍♀️<br>
+            <strong>The Rule:</strong> These words are spelled EXACTLY the same (or almost).
+        </p>
+        <div class="word-grid">
+            <div class="card" onclick="speak('Arm')"><span class="sv">Arm</span><span class="en">Arm</span></div>
+            <div class="card" onclick="speak('Hand')"><span class="sv">Hand</span><span class="en">Hand</span></div>
+            <div class="card" onclick="speak('Finger')"><span class="sv">Finger</span><span class="en">Finger</span></div>
+            <div class="card" onclick="speak('Knä')"><span class="sv">Knä</span><span class="pro">K-neh</span><span class="en">Knee (Pronounce the K!)</span></div>
+            <div class="card" onclick="speak('Hår')"><span class="sv">Hår</span><span class="pro">Hohr</span><span class="en">Hair</span></div>
+            <div class="card" onclick="speak('Fot')"><span class="sv">Fot</span><span class="pro">Foot</span><span class="en">Foot</span></div>
+            <div class="card" onclick="speak('Nerv')"><span class="sv">Nerv</span><span class="pro">Nerv</span><span class="en">Nerve</span></div>
+            <div class="card" onclick="speak('Puls')"><span class="sv">Puls</span><span class="pro">Puls</span><span class="en">Pulse</span></div>
+        </div>
+    </div>
+
+    <div style="background:#f3e5f5; padding:15px; border-radius:15px; border:2px dashed #9c27b0; margin-bottom:20px;">
+        <h3 style="margin-top:0; color:#7b1fa2; text-align:center;">😴 Trick #2: The Lazy "E"</h3>
+        <p style="font-size:14px; color:#444; line-height:1.5;">
+            <strong>Secret:</strong> Swedes are too tired to write the silent "E" at the end. 🪓<br>
+            <strong>The Rule:</strong> Drop the "E" in medical words!
+        </p>
+        <div class="word-grid">
+            <div class="card" onclick="speak('Medicin')"><span class="sv">Medicin</span><span class="pro">Meh-di-seen</span><span class="en">Medicine</span></div>
+            <div class="card" onclick="speak('Vitamin')"><span class="sv">Vitamin</span><span class="pro">Vee-ta-meen</span><span class="en">Vitamin</span></div>
+            <div class="card" onclick="speak('Insulin')"><span class="sv">Insulin</span><span class="pro">In-soo-leen</span><span class="en">Insulin</span></div>
+            <div class="card" onclick="speak('Hormon')"><span class="sv">Hormon</span><span class="pro">Hor-moon</span><span class="en">Hormone</span></div>
+            <div class="card" onclick="speak('Maskin')"><span class="sv">Maskin</span><span class="pro">Ma-sheen</span><span class="en">Machine (MRI!)</span></div>
+            <div class="card" onclick="speak('Aspirin')"><span class="sv">Aspirin</span><span class="pro">As-pi-reen</span><span class="en">Aspirin</span></div>
+            <div class="card" onclick="speak('Rutin')"><span class="sv">Rutin</span><span class="pro">Roo-teen</span><span class="en">Routine</span></div>
+            <div class="card" onclick="speak('Vaccin')"><span class="sv">Vaccin</span><span class="pro">Vak-seen</span><span class="en">Vaccine</span></div>
+        </div>
+    </div>
+
+    <div style="background:#fff3cd; padding:15px; border-radius:15px; border:2px dashed #ffc107; margin-bottom:25px;">
+        <h3 style="margin-top:0; color:#856404; text-align:center;">🥋 Trick #3: The Medical K-Kick</h3>
+        <p style="font-size:14px; color:#444; line-height:1.5;">
+            <strong>Secret:</strong> Even in the hospital, Swedes refuse to use "C". 🤧<br>
+            <strong>The Rule:</strong> Swap C for K, or C for S.
+        </p>
+        <div class="word-grid">
+            <div class="card" onclick="speak('Klinik')"><span class="sv">Klinik</span><span class="pro">Kli-neek</span><span class="en">Clinic</span></div>
+            <div class="card" onclick="speak('Infektion')"><span class="sv">Infektion</span><span class="pro">In-fek-shoon</span><span class="en">Infection</span></div>
+            <div class="card" onclick="speak('Injektion')"><span class="sv">Injektion</span><span class="pro">In-yek-shoon</span><span class="en">Injection</span></div>
+            <div class="card" onclick="speak('Recept')"><span class="sv">Recept</span><span class="pro">Re-sept</span><span class="en">Prescription</span></div>
+            <div class="card" onclick="speak('Ambulans')"><span class="sv">Ambulans</span><span class="pro">Am-boo-lans</span><span class="en">Ambulance</span></div>
+            <div class="card" onclick="speak('Kalcium')"><span class="sv">Kalcium</span><span class="pro">Kal-see-um</span><span class="en">Calcium</span></div>
+            <div class="card" onclick="speak('Akut')"><span class="sv">Akut</span><span class="pro">A-koot</span><span class="en">Acute (Emergency)</span></div>
+            <div class="card" onclick="speak('Bakterie')"><span class="sv">Bakterie</span><span class="pro">Bak-teh-ree</span><span class="en">Bacteria</span></div>
+        </div>
+    </div>
+
+    <h2>🩻 At Work (Radiology)</h2>
+    <div class="word-grid">
+        <div class="card" style="grid-column: span 2; background:#e3f2fd; border-color:#005B99;" onclick="speak('Röntgensjuksköterska')">
+            <span class="sv">Röntgensjuksköterska</span>
+            <span class="pro" style="font-size:11px;">Runt-gen-shook-shuh-ter-ska</span>
+            <span class="en">Radiographer (You!)</span>
+        </div>
+        
+        <div class="card" onclick="speak('Röntgen')"><span class="sv">Röntgen</span><span class="pro">Runt-gen</span><span class="en">X-Ray</span></div>
+        <div class="card" onclick="speak('Bild')"><span class="sv">Bild</span><span class="pro">Bild</span><span class="en">Image/Picture</span></div>
+        <div class="card" onclick="speak('Sjukhus')"><span class="sv">Sjukhus</span><span class="pro">Shook-hoos</span><span class="en">Hospital</span></div>
+        <div class="card" onclick="speak('Läkare')"><span class="sv">Läkare</span><span class="pro">Leh-ka-reh</span><span class="en">Doctor</span></div>
+        <div class="card" onclick="speak('Patient')"><span class="sv">Patient</span><span class="pro">Pa-shent</span><span class="en">Patient</span></div>
+        <div class="card" onclick="speak('Avdelning')"><span class="sv">Avdelning</span><span class="pro">Av-dehl-ning</span><span class="en">Department/Ward</span></div>
+        <div class="card" onclick="speak('Lab')"><span class="sv">Lab</span><span class="pro">Lab</span><span class="en">Laboratory</span></div>
+    </div>
+
+    <h2>🏗️ Medical Sentence Builders</h2>
+
+    <div style="border-left: 4px solid #dc3545; padding-left: 15px; margin-bottom: 25px;">
+        <h3 style="color:#dc3545; margin:0;">Rule #1: The Pain 🤕</h3>
+        <p style="font-size:14px; color:#555;">To say something hurts, Swedes say "I have pain in...".<br>
+        <strong>Formula:</strong> Jag har ont i + [Body Part]</p>
+        
+        <div class="sentence-list">
+            <div class="row" onclick="speak('Jag har ont i huvudet.')">
+                <div class="row-text"><span class="sv">Jag har ont i huvudet.</span><span class="pro">Yah har oont ee hoo-voo-deh</span><span class="en">I have a headache.</span></div>
+            </div>
+            <div class="row" onclick="speak('Jag har ont i magen.')">
+                <div class="row-text"><span class="sv">Jag har ont i magen.</span><span class="pro">Yah har oont ee mah-gen</span><span class="en">I have a stomach ache.</span></div>
+            </div>
+            <div class="row" onclick="speak('Jag har ont i ryggen.')">
+                <div class="row-text"><span class="sv">Jag har ont i ryggen.</span><span class="pro">Yah har oont ee ryg-gen</span><span class="en">I have back pain.</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div style="border-left: 4px solid #ffc107; padding-left: 15px; margin-bottom: 25px;">
+        <h3 style="color:#d39e00; margin:0;">Rule #2: The Condition 🌡️</h3>
+        <p style="font-size:14px; color:#555;">Use "Jag är" (I am) for feelings or sickness.<br>
+        <strong>Formula:</strong> Jag är + [Adjective]</p>
+        
+        <div class="sentence-list">
+            <div class="row" onclick="speak('Jag är sjuk.')">
+                <div class="row-text"><span class="sv">Jag är sjuk.</span><span class="pro">Yah air shook</span><span class="en">I am sick.</span></div>
+            </div>
+            <div class="row" onclick="speak('Jag är allergisk.')">
+                <div class="row-text"><span class="sv">Jag är allergisk.</span><span class="pro">Yah air a-ler-gisk</span><span class="en">I am allergic.</span></div>
+            </div>
+            <div class="row" onclick="speak('Jag är gravid.')">
+                <div class="row-text"><span class="sv">Jag är gravid.</span><span class="pro">Yah air gra-veed</span><span class="en">I am pregnant.</span></div>
+            </div>
+            <div class="row" onclick="speak('Jag är rädd.')">
+                <div class="row-text"><span class="sv">Jag är rädd.</span><span class="pro">Yah air red</span><span class="en">I am scared.</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div style="border-left: 4px solid #005B99; padding-left: 15px; margin-bottom: 25px;">
+        <h3 style="color:#005B99; margin:0;">Rule #3: Doctor Commands 👩‍⚕️</h3>
+        <p style="font-size:14px; color:#555;">When giving instructions to patients, keep it short!<br>
+        <strong>Formula:</strong> [Verb] + [Noun]</p>
+        
+        <div class="sentence-list">
+            <div class="row" onclick="speak('Andas in.')">
+                <div class="row-text"><span class="sv">Andas in.</span><span class="pro">An-das in</span><span class="en">Breathe in.</span></div>
+            </div>
+            <div class="row" onclick="speak('Andas ut.')">
+                <div class="row-text"><span class="sv">Andas ut.</span><span class="pro">An-das oot</span><span class="en">Breathe out.</span></div>
+            </div>
+            <div class="row" onclick="speak('Ligg stilla.')">
+                <div class="row-text"><span class="sv">Ligg stilla.</span><span class="pro">Lig stil-la</span><span class="en">Lie still. (Important for X-ray!)</span></div>
+            </div>
+            <div class="row" onclick="speak('Vänta här.')">
+                <div class="row-text"><span class="sv">Vänta här.</span><span class="pro">Ven-ta hair</span><span class="en">Wait here.</span></div>
+            </div>
+        </div>
+    </div>
+    
+    <h3>Useful Hospital Phrases</h3>
+    <div class="sentence-list">
+        <div class="row" onclick="speak('Jag jobbar här.')">
+            <div class="row-text"><span class="sv">Jag jobbar här.</span><span class="pro">Yah yob-bar hair</span><span class="en">I work here.</span></div>
+        </div>
+        <div class="row" onclick="speak('Var är toaletten?')">
+            <div class="row-text"><span class="sv">Var är toaletten?</span><span class="pro">Vahr air to-ah-let-ten?</span><span class="en">Where is the toilet?</span></div>
+        </div>
+        <div class="row" onclick="speak('Ring 112.')">
+            <div class="row-text"><span class="sv">Ring 112.</span><span class="pro">Ring ett-ett-två</span><span class="en">Call 112 (Emergency).</span></div>
+        </div>
+    </div>
+
+</div>
+
+<div id="day5" class="day-section">
+    
+    <h2 class="love-title">Day 5: Shopping Spree! 🛍️</h2>
+    <p style="text-align:center; color:#666; font-size:14px; margin-bottom:20px;">
+        Zainab, today we go shopping! 👗<br>
+        Plus, we learn the "Ninja Letters" that hide in words.
+    </p>
+
+    <h2>🥷 The 5 "Ninja" Sounds</h2>
+    <p style="font-size:13px; color:#666; margin-top:-10px;">The first letter is SILENT! Only say the "Y" sound.</p>
+    <div class="word-grid" style="grid-template-columns: repeat(5, 1fr); margin-bottom:30px;">
+        <div class="card" style="border-color:#6f42c1;" onclick="speak('Djur')"><span class="sv">Dj</span><span class="pro">Yoor</span><span class="en">Djur (Animal)</span></div>
+        <div class="card" style="border-color:#6f42c1;" onclick="speak('Ljus')"><span class="sv">Lj</span><span class="pro">Yoos</span><span class="en">Ljus (Light)</span></div>
+        <div class="card" style="border-color:#6f42c1;" onclick="speak('Hjärta')"><span class="sv">Hj</span><span class="pro">Yar-ta</span><span class="en">Hjärta (Heart)</span></div>
+        <div class="card" style="border-color:#6f42c1;" onclick="speak('Gjorde')"><span class="sv">Gj</span><span class="pro">Yoor-deh</span><span class="en">Gjorde (Did)</span></div>
+        <div class="card" style="border-color:#6f42c1;" onclick="speak('Kjol')"><span class="sv">Kj</span><span class="pro">Shoal</span><span class="en">Kjol (Skirt)</span></div>
+    </div>
+
+    <div style="background:#e3f2fd; padding:15px; border-radius:15px; border:2px dashed #005B99; margin-bottom:20px;">
+        <h3 style="margin-top:0; color:#005B99; text-align:center;">👯‍♀️ Trick #1: The "AL" Twins</h3>
+        <p style="font-size:14px; color:#444; line-height:1.5;">
+            <strong>Secret:</strong> Words ending in <strong>-AL</strong> are almost always the same in Swedish! <br>
+            <strong>The Rule:</strong> Just pronounce them with a Swedish accent.
+        </p>
+        <div class="word-grid">
+            <div class="card" onclick="speak('Normal')"><span class="sv">Normal</span><span class="en">Normal</span></div>
+            <div class="card" onclick="speak('Total')"><span class="sv">Total</span><span class="en">Total</span></div>
+            <div class="card" onclick="speak('Social')"><span class="sv">Social</span><span class="en">Social</span></div>
+            <div class="card" onclick="speak('Lokal')"><span class="sv">Lokal</span><span class="en">Local</span></div>
+            <div class="card" onclick="speak('Final')"><span class="sv">Final</span><span class="en">Final</span></div>
+            <div class="card" onclick="speak('Digital')"><span class="sv">Digital</span><span class="en">Digital</span></div>
+            <div class="card" onclick="speak('Original')"><span class="sv">Original</span><span class="en">Original</span></div>
+            <div class="card" onclick="speak('Global')"><span class="sv">Global</span><span class="en">Global</span></div>
+        </div>
+    </div>
+
+    <div style="background:#fff3cd; padding:15px; border-radius:15px; border:2px dashed #ffc107; margin-bottom:20px;">
+        <h3 style="margin-top:0; color:#856404; text-align:center;">💍 Trick #2: The "ING" Ring</h3>
+        <p style="font-size:14px; color:#444; line-height:1.5;">
+            <strong>Secret:</strong> Swedes love English "-ing" words.<br>
+            <strong>The Rule:</strong> "Shopping" is just "Shopping"!
+        </p>
+        <div class="word-grid">
+            <div class="card" onclick="speak('Shopping')"><span class="sv">Shopping</span><span class="en">Shopping</span></div>
+            <div class="card" onclick="speak('Camping')"><span class="sv">Camping</span><span class="en">Camping</span></div>
+            <div class="card" onclick="speak('Design')"><span class="sv">Design</span><span class="en">Design</span></div>
+            <div class="card" onclick="speak('Parkering')"><span class="sv">Parkering</span><span class="en">Parking</span></div>
+            <div class="card" onclick="speak('Träning')"><span class="sv">Träning</span><span class="en">Training (Exercise)</span></div>
+            <div class="card" onclick="speak('Kylling')"><span class="sv">Kyckling</span><span class="en">Chicken (-ling)</span></div>
+        </div>
+    </div>
+
+    <div style="background:#f8d7da; padding:15px; border-radius:15px; border:2px dashed #dc3545; margin-bottom:25px;">
+        <h3 style="margin-top:0; color:#721c24; text-align:center;">🏎️ Trick #3: The "R" Motor</h3>
+        <p style="font-size:14px; color:#444; line-height:1.5;">
+            <strong>Secret:</strong> To make a verb happen NOW (Present Tense), just add an <strong>R</strong>!<br>
+            <strong>The Rule:</strong> Jobba (Work) $\rightarrow$ Jobba<strong>r</strong> (Working).
+        </p>
+        <div class="word-grid">
+            <div class="card" onclick="speak('Jobbar')"><span class="sv">Jobbar</span><span class="pro">Yob-bar</span><span class="en">Working</span></div>
+            <div class="card" onclick="speak('Talar')"><span class="sv">Talar</span><span class="pro">Tah-lar</span><span class="en">Speaking</span></div>
+            <div class="card" onclick="speak('Studerar')"><span class="sv">Studerar</span><span class="pro">Stu-deh-rar</span><span class="en">Studying</span></div>
+            <div class="card" onclick="speak('Kostar')"><span class="sv">Kostar</span><span class="pro">Kos-tar</span><span class="en">Costs</span></div>
+            <div class="card" onclick="speak('Tittar')"><span class="sv">Tittar</span><span class="pro">Tit-tar</span><span class="en">Looking/Watching</span></div>
+            <div class="card" onclick="speak('Gillar')"><span class="sv">Gillar</span><span class="pro">Yil-lar</span><span class="en">Liking</span></div>
+        </div>
+    </div>
+
+    <h2>👗 Clothes & Style</h2>
+    <div class="word-grid">
+        <div class="card" onclick="speak('Kläder')"><span class="sv">Kläder</span><span class="pro">Kleh-der</span><span class="en">Clothes</span></div>
+        <div class="card" onclick="speak('Tröja')"><span class="sv">Tröja</span><span class="pro">Truh-yah</span><span class="en">Sweater/Shirt</span></div>
+        <div class="card" onclick="speak('Byxor')"><span class="sv">Byxor</span><span class="pro">Byx-or</span><span class="en">Pants</span></div>
+        <div class="card" onclick="speak('Jacka')"><span class="sv">Jacka</span><span class="pro">Yak-ka</span><span class="en">Jacket</span></div>
+        <div class="card" onclick="speak('Klänning')"><span class="sv">Klänning</span><span class="pro">Klen-ning</span><span class="en">Dress</span></div>
+        <div class="card" onclick="speak('Kjol')"><span class="sv">Kjol</span><span class="pro">Shoal</span><span class="en">Skirt</span></div>
+        <div class="card" onclick="speak('Skor')"><span class="sv">Skor</span><span class="pro">Skoor</span><span class="en">Shoes</span></div>
+        <div class="card" onclick="speak('Väska')"><span class="sv">Väska</span><span class="pro">Ves-ka</span><span class="en">Bag</span></div>
+        <div class="card" onclick="speak('Storlek')"><span class="sv">Storlek</span><span class="pro">Stoor-lehk</span><span class="en">Size</span></div>
+        <div class="card" onclick="speak('Provrum')"><span class="sv">Provrum</span><span class="pro">Proov-room</span><span class="en">Fitting Room</span></div>
+    </div>
+
+    <h2>🏗️ Shopping Sentence Builders</h2>
+
+    <div style="border-left: 4px solid #6f42c1; padding-left: 15px; margin-bottom: 25px;">
+        <h3 style="color:#6f42c1; margin:0;">Rule #1: The Treasure Hunt 🕵️‍♀️</h3>
+        <p style="font-size:14px; color:#555;">When you enter a store and need help finding something.<br>
+        <strong>Formula:</strong> Jag letar efter + [Thing]</p>
+        
+        <div class="sentence-list">
+            <div class="row" onclick="speak('Jag letar efter byxor.')">
+                <div class="row-text"><span class="sv">Jag letar efter byxor.</span><span class="pro">Yah leh-tar ef-ter byx-or</span><span class="en">I am looking for pants.</span></div>
+            </div>
+            <div class="row" onclick="speak('Jag letar efter en jacka.')">
+                <div class="row-text"><span class="sv">Jag letar efter en jacka.</span><span class="pro">Yah leh-tar ef-ter en yak-ka</span><span class="en">I am looking for a jacket.</span></div>
+            </div>
+            <div class="row" onclick="speak('Jag letar efter skor.')">
+                <div class="row-text"><span class="sv">Jag letar efter skor.</span><span class="pro">Yah leh-tar ef-ter skoor</span><span class="en">I am looking for shoes.</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div style="border-left: 4px solid #28a745; padding-left: 15px; margin-bottom: 25px;">
+        <h3 style="color:#28a745; margin:0;">Rule #2: The Price 🏷️</h3>
+        <p style="font-size:14px; color:#555;">The most important question! "What costs it?"<br>
+        <strong>Formula:</strong> Vad kostar + [Thing]?</p>
+        
+        <div class="sentence-list">
+            <div class="row" onclick="speak('Vad kostar den?')">
+                <div class="row-text"><span class="sv">Vad kostar den?</span><span class="pro">Vahd kos-tar den?</span><span class="en">How much is it?</span></div>
+            </div>
+            <div class="row" onclick="speak('Vad kostar tröjan?')">
+                <div class="row-text"><span class="sv">Vad kostar tröjan?</span><span class="pro">Vahd kos-tar truh-yan?</span><span class="en">How much is the sweater?</span></div>
+            </div>
+            <div class="row" onclick="speak('Det är billigt!')">
+                <div class="row-text"><span class="sv">Det är billigt!</span><span class="pro">Deh air bil-ligt</span><span class="en">It is cheap!</span></div>
+            </div>
+            <div class="row" onclick="speak('Det är dyrt!')">
+                <div class="row-text"><span class="sv">Det är dyrt!</span><span class="pro">Deh air dyrt</span><span class="en">It is expensive!</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div style="border-left: 4px solid #ffc107; padding-left: 15px; margin-bottom: 25px;">
+        <h3 style="color:#d39e00; margin:0;">Rule #3: Trying It On 👗</h3>
+        <p style="font-size:14px; color:#555;">Ask to test the clothes first.<br>
+        <strong>Formula:</strong> Kan jag prova + [Thing]?</p>
+        
+        <div class="sentence-list">
+            <div class="row" onclick="speak('Kan jag prova den?')">
+                <div class="row-text"><span class="sv">Kan jag prova den?</span><span class="pro">Kan yah proo-va den?</span><span class="en">Can I try it on?</span></div>
+            </div>
+            <div class="row" onclick="speak('Var är provrummet?')">
+                <div class="row-text"><span class="sv">Var är provrummet?</span><span class="pro">Vahr air proov-room-met?</span><span class="en">Where is the fitting room?</span></div>
+            </div>
+            <div class="row" onclick="speak('Den passar bra.')">
+                <div class="row-text"><span class="sv">Den passar bra.</span><span class="pro">Den pas-sar brah</span><span class="en">It fits well.</span></div>
+            </div>
+            <div class="row" onclick="speak('Den är för liten.')">
+                <div class="row-text"><span class="sv">Den är för liten.</span><span class="pro">Den air fur lee-ten</span><span class="en">It is too small.</span></div>
+            </div>
+        </div>
+    </div>
+    
+    <h3>At the Checkout</h3>
+    <div class="sentence-list">
+        <div class="row" onclick="speak('Jag tar den.')">
+            <div class="row-text"><span class="sv">Jag tar den.</span><span class="pro">Yah tar den</span><span class="en">I'll take it. (I'll buy it)</span></div>
+        </div>
+        <div class="row" onclick="speak('Tar ni kort?')">
+            <div class="row-text"><span class="sv">Tar ni kort?</span><span class="pro">Tar nee koort?</span><span class="en">Do you take card?</span></div>
+        </div>
+        <div class="row" onclick="speak('Jag tittar bara.')">
+            <div class="row-text"><span class="sv">Jag tittar bara.</span><span class="pro">Yah tit-tar bah-ra</span><span class="en">I am just looking. (Browsing)</span></div>
+        </div>
+    </div>
+
+</div>
+
+</div>
+
+    </div>
+
+    <div class="fab-btn" onclick="startQuiz()">⌨️</div>
+
+    <div class="modal-overlay" id="quizModal">
+        <div style="color:white; margin-bottom:15px; font-weight:bold;" id="quizStreak">Streak: 0 🔥</div>
+        
+        <div class="quiz-card">
+            <span class="quiz-question">Translate to Swedish:</span>
+            <span class="quiz-word-en" id="qWord">...</span>
+            
+            <input type="text" id="userAnswer" class="answer-input" placeholder="Type here..." autocomplete="off">
+
+            <div class="char-row">
+                <button class="char-btn" onclick="addChar('å')">å</button>
+                <button class="char-btn" onclick="addChar('ä')">ä</button>
+                <button class="char-btn" onclick="addChar('ö')">ö</button>
+            </div>
+
+            <button class="check-btn" onclick="checkInput()">Check</button>
+            
+            <div class="feedback-msg" id="feedback"></div>
+        </div>
+
+        <button class="close-quiz" onclick="closeQuiz()">Exit</button>
+    </div>
+
+    <script>
+        // --- 1. GENERATE DAYS 3 to 30 AUTOMATICALLY ---
+        const navContainer = document.getElementById('navScroll');
+        const contentContainer = document.getElementById('contentArea');
+
+        for (let i = 3; i <= 30; i++) {
+            // Create Nav Button
+            const btn = document.createElement('div');
+            btn.className = 'nav-item';
+            btn.innerText = 'Day ' + i;
+            btn.setAttribute('onclick', `switchDay('day${i}', this)`);
+            navContainer.appendChild(btn);
+
+            // Create Content Section
+            const content = document.createElement('div');
+            content.id = 'day' + i;
+            content.className = 'day-section';
+            content.innerHTML = `
+                <div class="coming-soon">
+                    <h2>Day ${i}</h2>
+                    <p style="font-size: 40px; margin: 10px 0;">🚧</p>
+                    <p>Coming Soon!</p>
+                    <p style="font-size: 12px; color: #ccc;">(Practice Day 1, 2 & 3 for now)</p>
+                </div>
+            `;
+            contentContainer.appendChild(content);
+        }
+
+        // --- 2. AUDIO FUNCTION ---
+        var currentAudio = null;
+
+        function speak(text) {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            }
+            var url = 'https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=sv&q=' + encodeURIComponent(text);
+            currentAudio = new Audio(url);
+            var isSlow = document.getElementById('slowMode').checked;
+            currentAudio.playbackRate = isSlow ? 0.7 : 1.0;
+            currentAudio.play().catch(e => console.log("Audio Error:", e));
+        }
+
+        // --- 3. TAB SWITCHER (With Scroll-to-Center) ---
+        function switchDay(dayId, clickedBtn) {
+            // Hide all sections
+            document.querySelectorAll('.day-section').forEach(el => el.classList.remove('active'));
+            // Reset buttons
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+
+            // Activate chosen
+            document.getElementById(dayId).classList.add('active');
+            clickedBtn.classList.add('active');
+
+            // Scroll button to center
+            clickedBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // --- 4. TYPING QUIZ LOGIC (NEW) ---
+        let quizWords = [];
+        let currentWord = null;
+        let streak = 0;
+
+        function startQuiz() {
+            // 1. Get words from active day
+            const activeDay = document.querySelector('.day-section.active');
+            const cards = activeDay.querySelectorAll('.card, .row');
+            quizWords = [];
+
+            cards.forEach(el => {
+                const sv = el.querySelector('.sv')?.innerText;
+                const en = el.querySelector('.en')?.innerText;
+                if (sv && en) {
+                    // Clean up: remove punctuation from phrases for easier typing match
+                    quizWords.push({ sv: sv.trim(), en: en.trim() });
+                }
+            });
+
+            if(quizWords.length === 0) {
+                alert("No words to practice in this section!");
+                return;
+            }
+
+            // 2. Open Modal
+            document.getElementById('quizModal').style.display = 'flex';
+            streak = 0;
+            updateStreak();
+            nextQuestion();
+        }
+
+        function closeQuiz() {
+            document.getElementById('quizModal').style.display = 'none';
+        }
+
+        function updateStreak() {
+            document.getElementById('quizStreak').innerText = "Streak: " + streak + " 🔥";
+        }
+
+        function nextQuestion() {
+            // Reset UI
+            const input = document.getElementById('userAnswer');
+            input.value = "";
+            input.className = "answer-input"; // Remove green/red classes
+            input.disabled = false;
+            input.focus();
+            document.getElementById('feedback').innerText = "";
+
+            // Pick random word
+            const randIndex = Math.floor(Math.random() * quizWords.length);
+            currentWord = quizWords[randIndex];
+
+            // Show English Word
+            document.getElementById('qWord').innerText = currentWord.en;
+        }
+
+        function addChar(char) {
+            const input = document.getElementById('userAnswer');
+            input.value += char;
+            input.focus();
+        }
+
+        function checkInput() {
+            const input = document.getElementById('userAnswer');
+            const feedback = document.getElementById('feedback');
+            const userText = input.value.trim().toLowerCase();
+            
+            // Remove punctuation from correct answer for fair comparison (e.g., "Hej!" -> "hej")
+            // Also remove questions marks for sentences
+            const correctText = currentWord.sv.toLowerCase().replace(/[!?,.]/g, "");
+            const cleanUserText = userText.replace(/[!?,.]/g, "");
+
+            if (cleanUserText === correctText) {
+                // CORRECT
+                input.classList.add('correct');
+                feedback.style.color = "#28a745";
+                feedback.innerText = "Correct Yayyyyyyyy! 🎉 I love you ❤️";
+                speak(currentWord.sv); // Play audio reward
+                streak++;
+                updateStreak();
+                input.disabled = true;
+                
+                setTimeout(nextQuestion, 1500); // Wait 1.5s then next
+            } else {
+                // WRONG
+                input.classList.add('wrong');
+                feedback.style.color = "#dc3545";
+                feedback.innerText = "Wrong but I still Love you ❤️.\nIt is: " + currentWord.sv;
+                streak = 0;
+                updateStreak();
+                speak(currentWord.sv); // Play audio so she hears the right way
+                
+                // Wait longer so she can read the correction
+                input.disabled = true;
+                setTimeout(nextQuestion, 3000); 
+            }
+        }
+
+        // Allow pressing "Enter" key to submit
+        document.getElementById('userAnswer').addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                checkInput();
+            }
+        });
+
+    </script>
+
+</body>
+</html>

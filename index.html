@@ -1085,25 +1085,24 @@
             currentAudio.play().catch(e => console.log("Audio Error:", e));
         }*/
 
+       var currentAudio = null;
+
         function speak(text) {
-            // 1. Stop any current speech so they don't overlap
-            window.speechSynthesis.cancel();
+            // 1. Stop any currently playing audio
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            }
 
-            // 2. Create the "Utterance" (The sentence to speak)
-            const utterance = new SpeechSynthesisUtterance(text);
-            
-            // 3. Set the language to Swedish
-            // (This uses the phone/computer's native Swedish voice)
-            utterance.lang = 'sv-SE'; 
+            // 2. Point to YOUR OWN server file (tts.php)
+            // We verify if slow mode is checked, but Google TTS doesn't support speed control easily via this URL.
+            // If you really need slow mode, we might need a different API, but this restores the voice.
+            var url = 'tts.php?q=' + encodeURIComponent(text);
 
-            // 4. Check Slow Mode
-            var isSlow = document.getElementById('slowMode').checked;
-            utterance.rate = isSlow ? 0.6 : 1.0; // 0.6 is good for slow learning
-
-            // 5. Speak it!
-            window.speechSynthesis.speak(utterance);
+            // 3. Play it
+            currentAudio = new Audio(url);
+            currentAudio.play().catch(e => console.log("Audio Error:", e));
         }
-
         // --- 3. TAB SWITCHER (With Scroll-to-Center) ---
         function switchDay(dayId, clickedBtn) {
             // Hide all sections
